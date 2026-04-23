@@ -23,5 +23,5 @@ It helps users track their daily water intake easily.
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Access Link
 (https://adiisback.github.io/Water-Tracker-System/)
