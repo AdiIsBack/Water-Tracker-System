@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HydraTrack 💧</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f172a;
+    overflow: hidden;
+    color: white;
+}
+
+/* background glow */
+.blob {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    background: rgba(0, 230, 255, 0.14);
+    filter: blur(90px);
+    border-radius: 50%;
+}
+
+.blob.one { top: -60px; left: -60px; }
+.blob.two { bottom: -80px; right: -80px; background: rgba(0,255,150,0.12); }
+
+/* MAIN WRAPPER */
+.wrapper {
+    display: flex;
+    width: 95vw;
+    max-width: 1300px;
+    gap: 18px;
+    z-index: 2;
+    justify-content: space-between;
+}
+
+/* LEFT */
+.side {
+    width: 260px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mini {
+    background: rgba(255,255,255,0.06);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+/* CENTER */
+.card {
+    flex: 1;
+    max-width: 460px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+}
+
+/* RIGHT PANEL */
+.right {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.box {
+    background: rgba(255,255,255,0.05);
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.4;
+    backdrop-filter: blur(10px);
+}
+
+/* TOP */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    opacity: 0.75;
+    margin-bottom: 10px;
+}
+
+h1 { font-size: 20px; }
+
+.status {
+    font-size: 13px;
+    opacity: 0.85;
+    margin: 8px 0;
+}
+
+/* BAR */
+.bar {
+    height: 12px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50px;
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+.fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00e6ff, #00ff99);
+    transition: 0.4s ease;
+}
+
+/* INFO */
+.info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* BUTTONS */
+button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 7px;
+    cursor: pointer;
+}
+
+.add { background: #00e6ff; }
+.quick { background: rgba(255,255,255,0.15); color: white; }
+.reset { background: #ff4d6d; color: white; }
+
+/* HISTORY BUTTON */
+.history-btn {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #00ff99;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* MINI PROGRESS */
+.smallbar {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.smallfill {
+    height: 100%;
+    width: 0%;
+    background: #00e6ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="blob one"></div>
+<div class="blob two"></div>
+
+<div class="wrapper">
+
+    <!-- LEFT -->
+    <div class="side">
+        <div class="mini">💧 Today: <b id="today">0</b> ml</div>
+        <div class="mini">🎯 Goal: <b>2000</b> ml</div>
+        <div class="mini">🔥 Streak: <b id="streak">0</b></div>
+
+        <div class="mini">
+            📊 Weekly Avg
+            <div class="smallbar"><div class="smallfill" id="avgBar"></div></div>
+        </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="card">
+
+        <div class="topbar">
+            <span id="date"></span>
+            <span id="state">Good 💧</span>
+        </div>
+
+        <h1>HydraTrack</h1>
+
+        <div class="status" id="status">0 / 2000 ml</div>
+
+        <div class="bar">
+            <div class="fill" id="fill"></div>
+        </div>
+
+        <div class="info">
+            <span id="left">2000 ml left</span>
+            <span id="last">Last: --</span>
+        </div>
+
+        <input type="number" id="amount" placeholder="Enter ml">
+
+        <button class="add" onclick="add()">Add 💧</button>
+
+        <div class="row">
+            <button class="quick" onclick="quick(250)">+250</button>
+            <button class="quick" onclick="quick(500)">+500</button>
+        </div>
+
+        <button class="reset" onclick="reset()">Reset</button>
+
+        <!-- ✅ HISTORY BUTTON -->
+        <a href="history.html" class="history-btn">📊 View History</a>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+        <div class="box">🧠 Insight<br>Hydration improves focus.</div>
+        <div class="box">⚡ Performance<br>Better hydration = more energy.</div>
+        <div class="box">⏱ Session Time<br><span id="timer">0s</span></div>
+        <div class="box">📈 Habit Score<br><span id="score">Good</span></div>
+    </div>
+
+</div>
+
+<script>
+
+let goal = 2000;
+let today = new Date().toISOString().split("T")[0];
+let start = Date.now();
+
+let data = JSON.parse(localStorage.getItem("waterData")) || {};
+if (!data[today]) data[today] = { total: 0, last: "--" };
+
+function save() {
+    localStorage.setItem("waterData", JSON.stringify(data));
+}
+
+function update() {
+    let d = data[today];
+
+    document.getElementById("today").innerText = d.total;
+    document.getElementById("status").innerText = `${d.total} / ${goal} ml`;
+
+    let percent = Math.min((d.total / goal) * 100, 100);
+    document.getElementById("fill").style.width = percent + "%";
+
+    document.getElementById("left").innerText = `${goal - d.total} ml left`;
+    document.getElementById("last").innerText = `Last: ${d.last}`;
+
+    document.getElementById("streak").innerText = Object.keys(data).length;
+
+    document.getElementById("state").innerText =
+        d.total < 500 ? "Low ⚠️" : d.total > 1400 ? "Great 🔥" : "Good 💧";
+
+    document.getElementById("avgBar").style.width = percent + "%";
+
+    document.getElementById("score").innerText =
+        d.total < 500 ? "Low" : d.total > 1400 ? "High" : "Good";
+
+    save();
+}
+
+function add() {
+    let v = document.getElementById("amount").value;
+    if (!v) return;
+
+    data[today].total += parseInt(v);
+    data[today].last = new Date().toLocaleTimeString();
+
+    document.getElementById("amount").value = "";
+    update();
+}
+
+function quick(v) {
+    data[today].total += v;
+    data[today].last = new Date().toLocaleTimeString();
+    update();
+}
+
+function reset() {
+    data[today] = { total: 0, last: "--" };
+    update();
+}
+
+setInterval(() => {
+    document.getElementById("timer").innerText =
+        Math.floor((Date.now() - start) / 1000) + "s";
+}, 1000);
+
+update();
+
+</script>
+
+</body>
+</html>

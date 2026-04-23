@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HydraTrack History</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #0f172a;
+    color: white;
+    padding: 30px;
+}
+
+/* container */
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* header */
+h1 {
+    margin-bottom: 5px;
+}
+
+.sub {
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+
+/* stats */
+.stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* history list */
+.history {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.row {
+    background: rgba(255,255,255,0.05);
+    padding: 14px;
+    border-radius: 12px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* progress bar */
+.bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00e6ff, #00ff99);
+}
+
+/* empty */
+.empty {
+    opacity: 0.6;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* button */
+.back {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 10px 14px;
+    background: #00e6ff;
+    color: black;
+    border-radius: 10px;
+    text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>HydraTrack History</h1>
+    <div class="sub">Your hydration logs over time</div>
+
+    <div class="stats">
+        <div class="card">
+            <div>Total Days</div>
+            <h2 id="days">0</h2>
+        </div>
+        <div class="card">
+            <div>Average Intake</div>
+            <h2 id="avg">0 ml</h2>
+        </div>
+        <div class="card">
+            <div>Best Day</div>
+            <h2 id="best">0 ml</h2>
+        </div>
+    </div>
+
+    <div class="history" id="history"></div>
+
+    <div class="empty" id="empty" style="display:none;">
+        No data yet. Go drink water 💧
+    </div>
+
+    <a href="index.html" class="back">← Back to Tracker</a>
+
+</div>
+
+<script>
+
+let goal = 2000;
+let data = JSON.parse(localStorage.getItem("waterData")) || {};
+
+let dates = Object.keys(data).sort().reverse();
+
+let historyDiv = document.getElementById("history");
+
+if (dates.length === 0) {
+    document.getElementById("empty").style.display = "block";
+} else {
+
+    let total = 0;
+    let best = 0;
+
+    dates.forEach(date => {
+
+        let d = data[date];
+        total += d.total;
+        if (d.total > best) best = d.total;
+
+        let percent = Math.min((d.total / goal) * 100, 100);
+
+        let row = document.createElement("div");
+        row.className = "row";
+
+        row.innerHTML = `
+            <div class="top">
+                <span>${date}</span>
+                <span>${d.total} ml</span>
+            </div>
+
+            <div class="bar">
+                <div class="fill" style="width:${percent}%"></div>
+            </div>
+        `;
+
+        historyDiv.appendChild(row);
+    });
+
+    document.getElementById("days").innerText = dates.length;
+    document.getElementById("avg").innerText =
+        Math.round(total / dates.length) + " ml";
+    document.getElementById("best").innerText = best + " ml";
+}
+
+</script>
+
+</body>
+</html>
