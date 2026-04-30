@@ -186,30 +186,52 @@ button {
     width: 0%;
     background: #00e6ff;
 }
-    /* mobile responsiveness */
-@media (max-width: 800px) {
-    body {
-        height: auto;
-        overflow: auto;
-        padding: 20px 0;
-    }
-    .wrapper {
-        flex-direction: column;
-        align-items: center;
-    }
-    .side, .right {
-        width: 100%;
-        max-width: 460px;
-    }
-    .card {
-        width: 100%;
-    }
-    .row {
-        display: flex;
-        gap: 10px;
-    }
-}
+/* mobile responsiveness */
+        @media (max-width: 800px) {
+            body {
+                height: auto;
+                overflow: auto;
+                padding: 20px 0;
+            }
 
+            .wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .side,
+            .right {
+                width: 100%;
+                max-width: 460px;
+            }
+
+            .card {
+                width: 100%;
+            }
+
+            .row {
+                display: flex;
+                gap: 10px;
+            }
+
+            .mini,
+            .box,
+            .info {
+                font-size: 14px;
+            }
+
+            .status {
+                font-size: 15px;
+            }
+
+            .topbar {
+                font-size: 13px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
 </style>
 </head>
 
